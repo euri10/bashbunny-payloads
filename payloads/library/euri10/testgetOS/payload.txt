@@ -1,0 +1,14 @@
+#!/usr/bin bash
+
+DUCKY_LANG gb
+
+
+OS
+
+if [ "$OS" == "mac" ]
+then
+    ATTACKMODE HID VID_0X05AC PID_0X021E STORAGE
+elif [ "$OS" == "linux" ]
+then
+    ATTACKMODE HID STORAGE
+fi
