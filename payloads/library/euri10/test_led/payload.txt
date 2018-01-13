@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+ATTACKMODE HID
+
+
+declare -a colors=("R" "G" "B" "Y" "C" "M" "W")
+declare -a patterns=("SOLID" "SLOW" "FAST" "VERYFAST" "SINGLE" "DOUBLE" "TRIPLE" "QUAD" "QUIN" "ISINGLE" "IDOUBLE" "ITRIPLE" "IQUAD" "IQUIN" "SUCCESS")
+# now loop through the above array
+for i in "${colors[@]}"
+do
+    for j in "${patterns[@]}"
+    do
+        LED "$i" "$j"
+    done
+done
+
